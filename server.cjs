@@ -3,6 +3,8 @@ const cors=require('cors')
 const bodyParser=require('body-parser')
 const mongoose=require('mongoose')
 const {Restaurants,Users}=require('./schema.cjs')
+// mongoose.
+// const {ObjectId}=require('mongoose')
 
 //skdjf
 const app = express()
@@ -84,6 +86,31 @@ app.post('/create-new-user', async function(request,response){
     }
 })
 
+app.delete("/delete-restaurant-detail/:id",async function(request,response){
+    try{
+        const restaurant = await Restaurants.findByIdAndDelete(request.params.id)
+        if (restaurant) {
+            await Restaurants.findByIdAndDelete(request.params.id)
+            response.status(202).json({
+                "status":"Success",
+                "message":"deleted successfully"
+            }) 
+        }
+        else{
+            response.status(500).json({
+                "status":"failure",
+                "message": "entry not deleted",
+            })
+        }
+        
+    }catch(error)
+    {
+        response.status(500).json({
+            "status":"failure",
+            "message": "not deleted",
+        })
+    }
+})
 
 
 app.post('/validate-user',async function(request,response){
